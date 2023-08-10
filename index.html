@@ -7,6 +7,7 @@
     <title>Condorbox Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/df065ed049.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 </head>
 <body>
 <div id="header">
@@ -153,9 +154,9 @@
                 <a href="files/Manuel Martinez CV.pdf" download class="btn btn2">Dowload CV</a>
             </div>
             <div class="contact-right">
-                <form name="submit-to-google-sheet">
+                <form name="submit-to-email">
                     <input type="text" name="name" placeholder="Your name" required>
-                    <input type="text" name="email" placeholder="Your email" required>
+                    <input type="email" name="email" placeholder="Your email" required>
                     <textarea name="message" rows="6" placeholder="Your message"></textarea>
                     <button type="submit" class="btn btn2">Submit</button>
                 </form>
@@ -201,22 +202,31 @@
 </script>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzAfefpQu0f5PgYKNPj_yYpTe29axcM7NUTysfAa8q9U5ncdRmYJWQzQjcRqYDrTTsnFQ/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
+    const emailjsUserID = 'CJzOIDt5mTTtO2j0p'; 
+    const emailjsServiceID = 'service_83gq9hu'; 
+    const emailjsTemplateID = 'template_6onb1lu';
+
+    const form = document.forms['submit-to-email'];
+    const msg = document.getElementById("msg");
 
     form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-            msg.innerHTML = "Message sent successfully"
-            setTimeout(function(){
-                msg.innerHTML = ""
-            }, 5000)
-            form.reset()
-        })
-        .catch(error => console.error('Error!', error.message))
-    })
+      e.preventDefault();
+
+      emailjs.init(emailjsUserID);
+
+      emailjs.sendForm(emailjsServiceID, emailjsTemplateID, form)
+        .then(function(response) {
+            console.log('Message sent successfully', response);
+            msg.innerHTML = "Message sent successfully";
+            setTimeout(function() {
+                msg.innerHTML = "";
+            }, 5000);
+            form.reset();
+        }, function(error) {
+            console.error('Error when sending mail', error);
+            msg.innerHTML = "Error when sending mail";
+        });
+    });
 </script>
 
 </body>
