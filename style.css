@@ -17,6 +17,7 @@ body {
     background-image: url(files/images/background.png);
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
 }
 .container {
     padding: 10px 10%;
@@ -372,4 +373,10 @@ nav .fas {
     .copyright {
         font-size: 14px;
     }
+}
+
+#msg {
+    color: #61b752;
+    margin-top: -40px;
+    display: block;
 }
